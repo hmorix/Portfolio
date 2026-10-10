@@ -1,0 +1,6 @@
+{
+  "name": "The Path To Victory — Erigo Store",
+  "description": "Interactive progressive animated store for Erigo x JKT48 Vol. 6 football-inspired streetwear collaboration.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
