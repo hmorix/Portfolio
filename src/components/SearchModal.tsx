@@ -1,34 +1,35 @@
 import React, { useState, useMemo } from 'react';
 import { Search, X, ArrowRight } from 'lucide-react';
-import { PRODUCTS, Product } from '../data/products';
+import { PROJECTS, Project } from '../data/portfolio';
 import { sounds } from '../utils/audio';
 
 interface SearchModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onSelectProduct: (product: Product) => void;
-  lang: 'ID' | 'EN';
+  onSelectProject: (project: Project) => void;
+  lang: 'EN' | 'HI';
 }
 
 export const SearchModal: React.FC<SearchModalProps> = ({
   isOpen,
   onClose,
-  onSelectProduct,
+  onSelectProject,
   lang,
 }) => {
   const [query, setQuery] = useState('');
 
-  const quickTags = ['Windbreaker', 'Jersey', 'Freya', 'Zee', 'Hoodie', 'Coach Jacket', 'Scarf', 'Vol. 6'];
+  const quickTags = ['WhatsApp Agent', 'EventNix', 'BillingFlow', 'Python', 'React', 'NVIDIA NIM', 'Supabase', 'AEO'];
 
   const results = useMemo(() => {
     if (!query.trim()) return [];
     const q = query.toLowerCase();
-    return PRODUCTS.filter(
+    return PROJECTS.filter(
       p =>
         p.name.toLowerCase().includes(q) ||
-        p.category.toLowerCase().includes(q) ||
-        p.ambassador.toLowerCase().includes(q) ||
-        p.description.toLowerCase().includes(q)
+        p.categoryLabel.toLowerCase().includes(q) ||
+        p.tagline.toLowerCase().includes(q) ||
+        p.description.toLowerCase().includes(q) ||
+        p.stack.some(s => s.toLowerCase().includes(q))
     );
   }, [query]);
 
@@ -45,7 +46,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
             autoFocus
             value={query}
             onChange={e => setQuery(e.target.value)}
-            placeholder={lang === 'ID' ? 'Cari jaket, jersey, member oshi (contoh: Freya, Windbreaker)...' : 'Search collection, member or item (e.g. Jersey, Zee)...'}
+            placeholder={lang === 'HI' ? 'प्रोजेक्ट या तकनीक खोजें (उदा: WhatsApp, React, Python)...' : 'Search projects, tech stack, or architecture (e.g. WhatsApp, Groq)...'}
             className="flex-1 bg-transparent text-base md:text-lg font-sans text-[#101214] placeholder:text-[#101214]/40 focus:outline-none"
           />
           {query && (
@@ -66,7 +67,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
         {/* Quick Suggested Tags */}
         <div className="px-4 py-3 bg-white border-b border-black/5 flex items-center gap-2 overflow-x-auto text-xs font-mono scrollbar-none">
-          <span className="text-[#101214]/50 shrink-0">Popular:</span>
+          <span className="text-[#101214]/50 shrink-0">Tags:</span>
           {quickTags.map(tag => (
             <button
               key={tag}
@@ -85,38 +86,38 @@ export const SearchModal: React.FC<SearchModalProps> = ({
         <div className="max-h-[60vh] overflow-y-auto p-4">
           {query.trim() === '' ? (
             <div className="text-center py-8 text-xs font-mono text-[#101214]/50">
-              {lang === 'ID' ? 'Ketik kata kunci untuk mencari koleksi ERIGO X JKT48 Vol. 6' : 'Type to search products, members, and accessories'}
+              Type keywords to search Harsh Sharma's projects, architecture, and tech stacks.
             </div>
           ) : results.length === 0 ? (
             <div className="text-center py-8 text-sm text-[#101214]/60">
-              Tidak ditemukan produk untuk "{query}".
+              No projects found for "{query}". Try "AI", "React", or "Billing".
             </div>
           ) : (
             <div className="divide-y divide-black/5">
-              {results.map(product => (
+              {results.map(project => (
                 <div
-                  key={product.id}
+                  key={project.id}
                   onClick={() => {
                     sounds.playClick();
-                    onSelectProduct(product);
+                    onSelectProject(project);
                     onClose();
                   }}
                   className="py-3 flex items-center gap-4 hover:bg-[#f4f5f5] px-2 rounded cursor-pointer transition-colors group"
                 >
                   <img
-                    src={product.image}
-                    alt={product.name}
-                    className="w-12 h-16 object-cover bg-black/5"
+                    src={project.image}
+                    alt={project.name}
+                    className="w-12 h-14 object-cover bg-black/5 rounded-sm"
                   />
                   <div className="flex-1 min-w-0">
-                    <span className="text-[10px] font-mono text-[#f4772a] block font-bold">
-                      {product.ambassador}
+                    <span className="text-[10px] font-mono text-[#f4772a] block font-bold uppercase">
+                      {project.categoryLabel}
                     </span>
                     <h4 className="text-sm font-bold text-[#101214] truncate group-hover:text-[#f4772a] transition-colors">
-                      {product.name}
+                      {project.name}
                     </h4>
-                    <span className="text-xs font-mono font-bold text-[#101214]">
-                      Rp {product.price.toLocaleString('id-ID')}
+                    <span className="text-xs font-mono text-[#101214]/60 line-clamp-1">
+                      {project.stack.join(', ')}
                     </span>
                   </div>
                   <ArrowRight className="w-4 h-4 text-[#101214]/30 group-hover:text-[#f4772a] transition-colors" />

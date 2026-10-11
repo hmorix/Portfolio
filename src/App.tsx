@@ -1,50 +1,42 @@
 import React, { useState, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { ProductCatalog } from './components/ProductCatalog';
-import { JerseyCustomizer } from './components/JerseyCustomizer';
-import { PhotocardGacha } from './components/PhotocardGacha';
-import { Lookbook } from './components/Lookbook';
-import { RetailerFinder } from './components/RetailerFinder';
+import { ProjectCatalog } from './components/ProjectCatalog';
+import { ScopeBuilder } from './components/ScopeBuilder';
+import { TechBadges } from './components/TechBadges';
+import { CaseStudies } from './components/CaseStudies';
+import { ExperienceHub } from './components/ExperienceHub';
 import { Footer } from './components/Footer';
-import { ProductDetailModal } from './components/ProductDetailModal';
-import { CartDrawer, CartItem } from './components/CartDrawer';
+import { ProjectDetailModal } from './components/ProjectDetailModal';
+import { DemoCartDrawer } from './components/DemoCartDrawer';
 import { SearchModal } from './components/SearchModal';
 import { AccountModal } from './components/AccountModal';
-import { Product, PRODUCTS } from './data/products';
+import { Project, PROJECTS } from './data/portfolio';
 import { sounds } from './utils/audio';
 
 export default function App() {
-  const [lang, setLang] = useState<'ID' | 'EN'>('ID');
+  const [lang, setLang] = useState<'EN' | 'HI'>('EN');
   const [currentTheme, setCurrentTheme] = useState<string>('classic');
   const [isMuted, setIsMuted] = useState(false);
   const [activeSection, setActiveSection] = useState('hero');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Modals & Drawers state
-  const [cartOpen, setCartOpen] = useState(false);
+  const [demoCartOpen, setDemoCartOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [accountOpen, setAccountOpen] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
-  // Cart state
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    // Default initial sample item in cart
-    return [
-      {
-        cartId: 'item-initial-1',
-        product: PRODUCTS[0],
-        size: 'L',
-        quantity: 1,
-      },
-    ];
+  // Demo Basket state: pre-select WhatsApp Agent & BillingFlow by default
+  const [demoProjects, setDemoProjects] = useState<Project[]>(() => {
+    return [PROJECTS[0], PROJECTS[2]];
   });
 
   // Track active section for navigation highlighting
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['hero', 'catalog', 'customizer', 'gacha', 'lookbook', 'retailers'];
-      const scrollPos = window.scrollY + 250;
+      const sections = ['hero', 'projects', 'scope-builder', 'skills', 'experience', 'case-studies'];
+      const scrollPos = window.scrollY + 220;
       for (const section of sections) {
         const el = document.getElementById(section);
         if (el) {
@@ -87,86 +79,43 @@ export default function App() {
       if (e.key === 'Escape') {
         setSearchOpen(false);
         setAccountOpen(false);
-        setCartOpen(false);
-        setSelectedProduct(null);
+        setDemoCartOpen(false);
+        setSelectedProject(null);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Cart Handlers
-  const handleAddToCart = (product: Product, size: string, quantity = 1) => {
-    setCartItems(prev => {
-      const existing = prev.find(item => item.product.id === product.id && item.size === size && !item.customDetails);
-      if (existing) {
-        return prev.map(item =>
-          item.cartId === existing.cartId
-            ? { ...item, quantity: item.quantity + quantity }
-            : item
-        );
-      }
-      const newItem: CartItem = {
-        cartId: `${product.id}-${size}-${Date.now()}`,
-        product,
-        size,
-        quantity,
-      };
-      return [...prev, newItem];
+  // Demo Basket Handlers
+  const handleAddToDemoCart = (project: Project) => {
+    setDemoProjects(prev => {
+      if (prev.some(p => p.id === project.id)) return prev;
+      return [...prev, project];
     });
   };
 
-  const handleAddCustomJersey = (customData: {
-    product: Product;
-    customName: string;
-    customNumber: string;
-    badgeName: string;
-    colorVariant: string;
-    size: string;
-  }) => {
-    const newItem: CartItem = {
-      cartId: `custom-${Date.now()}`,
-      product: customData.product,
-      size: customData.size,
-      quantity: 1,
-      customDetails: {
-        name: customData.customName,
-        number: customData.customNumber,
-        badge: customData.badgeName,
-        colorVariant: customData.colorVariant,
-      },
-    };
-    setCartItems(prev => [...prev, newItem]);
-    setCartOpen(true);
-  };
-
-  const handleUpdateQuantity = (cartId: string, quantity: number) => {
-    setCartItems(prev =>
-      prev.map(item => (item.cartId === cartId ? { ...item, quantity } : item))
-    );
-  };
-
-  const handleRemoveItem = (cartId: string) => {
+  const handleRemoveDemoProject = (projectId: string) => {
     sounds.playClick();
-    setCartItems(prev => prev.filter(item => item.cartId !== cartId));
+    setDemoProjects(prev => prev.filter(p => p.id !== projectId));
   };
 
-  const handleClearCart = () => {
-    setCartItems([]);
+  const handleClearDemoProjects = () => {
+    setDemoProjects([]);
   };
 
-  const totalCartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+  const demoProjectIds = demoProjects.map(p => p.id);
 
   return (
     <div className="min-h-screen bg-[#edf0f1] text-[#101214] font-sans antialiased overflow-x-hidden selection:bg-[#f4772a] selection:text-white">
       {/* Navigation Header */}
       <Header
-        cartCount={totalCartCount}
-        onOpenCart={() => setCartOpen(true)}
+        demoCount={demoProjects.length}
+        onOpenDemoCart={() => setDemoCartOpen(true)}
         onOpenSearch={() => setSearchOpen(true)}
         onOpenAccount={() => setAccountOpen(true)}
         lang={lang}
-        onToggleLang={() => setLang(lang === 'ID' ? 'EN' : 'ID')}
+        onToggleLang={() => setLang(lang === 'EN' ? 'HI' : 'EN')}
         isMuted={isMuted}
         onToggleAudio={handleToggleAudio}
         mobileMenuOpen={mobileMenuOpen}
@@ -176,12 +125,9 @@ export default function App() {
 
       {/* Hero Section */}
       <Hero
-        onPreOrderClick={() => {
-          const el = document.getElementById('catalog');
-          if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }}
-        onExploreClick={() => {
-          const el = document.getElementById('lookbook');
+        onApplyDemoClick={() => setDemoCartOpen(true)}
+        onExploreProjectsClick={() => {
+          const el = document.getElementById('projects');
           if (el) el.scrollIntoView({ behavior: 'smooth' });
         }}
         currentTheme={currentTheme}
@@ -189,30 +135,31 @@ export default function App() {
         lang={lang}
       />
 
-      {/* Product Catalog */}
-      <ProductCatalog
-        onSelectProduct={setSelectedProduct}
-        onAddToCart={(product, size) => handleAddToCart(product, size)}
+      {/* Production Projects Catalog */}
+      <ProjectCatalog
+        onSelectProject={setSelectedProject}
+        onAddToDemoCart={handleAddToDemoCart}
+        demoProjectIds={demoProjectIds}
         lang={lang}
       />
 
-      {/* Custom Kit Builder */}
-      <JerseyCustomizer
-        onAddCustomJersey={handleAddCustomJersey}
+      {/* Project Scope Calculator */}
+      <ScopeBuilder
+        onAddCustomScope={handleAddToDemoCart}
         lang={lang}
       />
 
-      {/* JKT48 Collectible Photocard Gacha Simulation */}
-      <PhotocardGacha lang={lang} />
+      {/* Tech Mastery Badges */}
+      <TechBadges lang={lang} />
 
-      {/* Editorial Lookbook */}
-      <Lookbook
-        onSelectProduct={setSelectedProduct}
+      {/* Experience Timeline */}
+      <ExperienceHub lang={lang} />
+
+      {/* Engineering Case Studies */}
+      <CaseStudies
+        onSelectProject={setSelectedProject}
         lang={lang}
       />
-
-      {/* Official Retailer Stores Finder */}
-      <RetailerFinder lang={lang} />
 
       {/* Footer */}
       <Footer
@@ -222,27 +169,27 @@ export default function App() {
       />
 
       {/* Modals and Overlays */}
-      <ProductDetailModal
-        product={selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        onAddToCart={handleAddToCart}
+      <ProjectDetailModal
+        project={selectedProject}
+        onClose={() => setSelectedProject(null)}
+        onAddToDemoCart={handleAddToDemoCart}
+        isAlreadySelected={selectedProject ? demoProjectIds.includes(selectedProject.id) : false}
         lang={lang}
       />
 
-      <CartDrawer
-        isOpen={cartOpen}
-        onClose={() => setCartOpen(false)}
-        items={cartItems}
-        onUpdateQuantity={handleUpdateQuantity}
-        onRemoveItem={handleRemoveItem}
-        onClearCart={handleClearCart}
+      <DemoCartDrawer
+        isOpen={demoCartOpen}
+        onClose={() => setDemoCartOpen(false)}
+        selectedProjects={demoProjects}
+        onRemoveProject={handleRemoveDemoProject}
+        onClearAll={handleClearDemoProjects}
         lang={lang}
       />
 
       <SearchModal
         isOpen={searchOpen}
         onClose={() => setSearchOpen(false)}
-        onSelectProduct={setSelectedProduct}
+        onSelectProject={setSelectedProject}
         lang={lang}
       />
 

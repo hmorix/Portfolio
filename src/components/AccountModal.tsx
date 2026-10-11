@@ -1,18 +1,19 @@
 import React from 'react';
-import { X, ShieldCheck, QrCode, Award, PackageCheck, Sparkles } from 'lucide-react';
+import { X, ShieldCheck, Mail, Phone, MapPin, Github, Globe, Award, Download, CheckCircle2 } from 'lucide-react';
+import { HARSH_PORTRAIT_PATH } from '../data/assets';
 
 interface AccountModalProps {
   isOpen: boolean;
   onClose: () => void;
-  lang: 'ID' | 'EN';
+  lang: 'EN' | 'HI';
 }
 
 export const AccountModal: React.FC<AccountModalProps> = ({ isOpen, onClose, lang }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
-      <div className="relative w-full max-w-lg bg-white border border-[#101214]/20 shadow-2xl p-6 rounded-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/65 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-xl bg-white border border-[#101214]/20 shadow-2xl p-6 sm:p-8 rounded-sm max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-1.5 text-[#101214]/60 hover:text-[#101214] rounded-full hover:bg-black/5"
@@ -21,85 +22,111 @@ export const AccountModal: React.FC<AccountModalProps> = ({ isOpen, onClose, lan
           <X className="w-5 h-5" />
         </button>
 
-        {/* Member Digital Stadium Card */}
+        {/* Profile Card Header */}
+        <div className="flex items-center gap-4 mb-6 pb-5 border-b border-black/10">
+          <img
+            src={HARSH_PORTRAIT_PATH}
+            alt="Harsh Sharma"
+            className="w-16 h-20 object-cover rounded shadow border border-black/15"
+          />
+          <div>
+            <div className="inline-flex items-center gap-1 text-[11px] font-mono uppercase tracking-wider text-[#f4772a] font-bold">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              <span>Full Stack Developer &amp; UI/UX</span>
+            </div>
+            <h2 className="text-2xl font-sans font-bold text-[#101214] m-0">
+              Harsh Sharma
+            </h2>
+            <div className="text-xs text-[#101214]/70 font-mono mt-0.5">
+              HMorix Digital Technologies • Hathras, Uttar Pradesh, India
+            </div>
+          </div>
+        </div>
+
+        {/* Contact Links */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs font-mono mb-6">
+          <a
+            href="mailto:hssuperuserc@gmail.com"
+            className="p-2.5 bg-[#f4f5f5] hover:bg-black/5 border border-black/10 rounded flex items-center gap-2 text-[#101214] transition-colors"
+          >
+            <Mail className="w-4 h-4 text-[#f4772a]" />
+            <span className="truncate">hssuperuserc@gmail.com</span>
+          </a>
+
+          <a
+            href="https://wa.me/919368153189"
+            target="_blank"
+            rel="noreferrer"
+            className="p-2.5 bg-[#f4f5f5] hover:bg-black/5 border border-black/10 rounded flex items-center gap-2 text-[#101214] transition-colors"
+          >
+            <Phone className="w-4 h-4 text-[#f4772a]" />
+            <span>+91 9368153189</span>
+          </a>
+
+          <a
+            href="https://github.com/hmorix"
+            target="_blank"
+            rel="noreferrer"
+            className="p-2.5 bg-[#f4f5f5] hover:bg-black/5 border border-black/10 rounded flex items-center gap-2 text-[#101214] transition-colors"
+          >
+            <Github className="w-4 h-4 text-[#f4772a]" />
+            <span>github.com/hmorix</span>
+          </a>
+
+          <a
+            href="https://harshsharma.tech"
+            target="_blank"
+            rel="noreferrer"
+            className="p-2.5 bg-[#f4f5f5] hover:bg-black/5 border border-black/10 rounded flex items-center gap-2 text-[#101214] transition-colors"
+          >
+            <Globe className="w-4 h-4 text-[#f4772a]" />
+            <span>harshsharma.tech</span>
+          </a>
+        </div>
+
+        {/* Core Summary */}
         <div className="mb-6">
-          <div className="text-xs font-mono uppercase tracking-widest text-[#f4772a] font-bold mb-1 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Official Supporter Member</span>
-          </div>
-          <h2 className="text-2xl font-bebas tracking-wide text-[#101214] m-0">
-            {lang === 'ID' ? 'KARTU SUPPORTER JKT48 X ERIGO' : 'VICTORY SUPPORTER PASS'}
-          </h2>
+          <h4 className="text-xs font-mono uppercase font-bold text-[#101214]/70 mb-2">
+            Professional Summary:
+          </h4>
+          <p className="text-xs text-[#101214]/85 leading-relaxed bg-[#f4f5f5] p-3 rounded border border-black/10">
+            Full Stack Web Developer at HMorix. Builds production web apps, automation systems, and AI agents end-to-end, from system design and backend to UI/UX. Skilled in RESTful APIs, JWT authentication, database design, SEO/AEO/GEO optimization, and graphic/motion design, with a record of turning manual processes into fast digital systems.
+          </p>
         </div>
 
-        {/* Digital Member Card */}
-        <div className="relative p-5 rounded-lg bg-gradient-to-br from-[#101214] via-[#1c1f24] to-[#2a2e36] text-white shadow-xl mb-6 overflow-hidden border border-white/10">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-5 h-5 text-[#f4772a]" />
-              <span className="font-bebas text-lg tracking-wider">THE PATH TO VICTORY</span>
-            </div>
-            <span className="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-[#f4772a] text-white font-bold">
-              GOLD TIER
-            </span>
-          </div>
-
-          <div className="mb-4">
-            <div className="text-[10px] font-mono text-white/50">MEMBER NAME:</div>
-            <div className="font-sans font-bold text-lg text-white">JKT48 SUPPORTER CLUB #48</div>
-            <div className="text-xs font-mono text-amber-300">ID: JKT48-ERG-2026-VOL6</div>
-          </div>
-
-          <div className="pt-3 border-t border-white/10 flex items-center justify-between text-xs font-mono">
-            <div>
-              <div className="text-[10px] text-white/50">VICTORY POINTS:</div>
-              <div className="font-bold text-[#f4772a] text-sm">1,480 PTS</div>
-            </div>
-            <div className="flex items-center gap-1.5 text-white/70">
-              <QrCode className="w-5 h-5" />
-              <span className="text-[10px]">SCAN AT THEATER</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Recent Pre-Order Tracking */}
+        {/* Education & Honors */}
         <div className="mb-6">
-          <h4 className="text-xs font-mono uppercase font-bold text-[#101214]/70 mb-3 flex items-center gap-1.5">
-            <PackageCheck className="w-4 h-4 text-[#f4772a]" />
-            <span>{lang === 'ID' ? 'Status Pre-Order Terakhir:' : 'Active Pre-Order Status:'}</span>
+          <h4 className="text-xs font-mono uppercase font-bold text-[#101214]/70 mb-2">
+            Education &amp; Credentials:
           </h4>
-          <div className="p-3 bg-[#f4f5f5] border border-black/10 rounded text-xs font-mono space-y-1">
-            <div className="flex justify-between font-bold text-[#101214]">
-              <span>BATCH 01 — #ERG-V6-78482</span>
-              <span className="text-emerald-700">IN PRODUCTION</span>
+          <div className="space-y-2 text-xs font-mono">
+            <div className="flex justify-between items-center p-2.5 bg-white border border-black/10 rounded">
+              <div>
+                <span className="font-bold text-[#101214]">Higher Secondary (12th)</span>
+                <span className="text-[#101214]/60 block text-[11px]">CBSE Board</span>
+              </div>
+              <span className="text-[#f4772a] font-bold">2022 – 2023</span>
             </div>
-            <div className="text-[#101214]/70">
-              1x Matchday Retro Home Jersey #48 (Freya 48) + 1x Photocard
-            </div>
-            <div className="text-[10px] text-[#101214]/50 pt-1 border-t border-black/5 flex justify-between">
-              <span>Estimated Dispatch: 18 Nov 2026</span>
-              <span className="text-[#f4772a]">Track Airway Bill →</span>
+
+            <div className="flex justify-between items-center p-2.5 bg-white border border-black/10 rounded">
+              <div>
+                <span className="font-bold text-[#101214]">FEA English Academy</span>
+                <span className="text-[#101214]/60 block text-[11px]">English Communication &amp; Personality Dev</span>
+              </div>
+              <span className="text-emerald-700 font-bold">Rank 3 Honors</span>
             </div>
           </div>
         </div>
 
-        {/* Member Perks */}
-        <div>
-          <h4 className="text-xs font-mono uppercase font-bold text-[#101214]/70 mb-2 flex items-center gap-1.5">
-            <Award className="w-4 h-4 text-[#f4772a]" />
-            <span>Member Exclusive Perks:</span>
-          </h4>
-          <ul className="text-xs space-y-1.5 text-[#101214]/80 font-sans">
-            <li className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[#f4772a] rounded-full" />
-              <span>Priority Access for JKT48 Theater Vol. 6 Meet & Greet</span>
-            </li>
-            <li className="flex items-center gap-2">
-              <span className="w-1.5 h-1.5 bg-[#f4772a] rounded-full" />
-              <span>Guaranteed Holographic Photocard Sleeve Protector</span>
-            </li>
-          </ul>
-        </div>
+        {/* WhatsApp Consultation Action */}
+        <a
+          href="https://wa.me/919368153189?text=Hi%20Harsh%2C%20I%20saw%20your%20portfolio%20and%20would%20like%20to%20connect%20for%20a%20project."
+          target="_blank"
+          rel="noreferrer"
+          className="w-full py-3 bg-[#101214] hover:bg-[#f4772a] text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors flex items-center justify-center gap-2 rounded-sm shadow"
+        >
+          <span>CHAT DIRECTLY ON WHATSAPP (+91 9368153189)</span>
+        </a>
       </div>
     </div>
   );

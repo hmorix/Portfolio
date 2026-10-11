@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
-import { COLOR_THEMES } from '../data/products';
+import { ArrowUpRight, CheckCircle2, Mail, Phone, Github, Globe } from 'lucide-react';
+import { COLOR_THEMES } from '../data/portfolio';
 import { sounds } from '../utils/audio';
 
 interface FooterProps {
   currentTheme: string;
   onSelectTheme: (theme: string) => void;
-  lang: 'ID' | 'EN';
+  lang: 'EN' | 'HI';
 }
 
 export const Footer: React.FC<FooterProps> = ({ currentTheme, onSelectTheme, lang }) => {
@@ -37,50 +37,48 @@ export const Footer: React.FC<FooterProps> = ({ currentTheme, onSelectTheme, lan
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10 pb-12 border-b border-white/10">
           {/* Brand Column */}
           <div className="lg:col-span-2">
-            <h3 className="font-sans text-3xl font-medium tracking-tight mb-3">
-              ThePathTo<span className="text-[#f4772a] font-bold">Victory</span>
+            <h3 className="font-sans text-3xl font-medium tracking-tight mb-2">
+              Harsh<span className="text-[#f4772a] font-bold">Sharma</span>
             </h3>
+            <div className="text-xs font-mono text-[#f4772a] uppercase tracking-wider mb-3">
+              Full Stack Web Developer &amp; UI/UX Designer
+            </div>
             <p className="text-sm text-white/70 max-w-sm mb-6 leading-relaxed">
-              {lang === 'ID'
-                ? 'Kolaborasi resmi ERIGO X JKT48 Vol. 6 merayakan semangat blockcore dan kultur suporter sepakbola modern.'
-                : 'Official ERIGO X JKT48 Vol. 6 collaboration celebrating matchday blockcore aesthetics and supporter culture.'}
+              {lang === 'HI'
+                ? 'HMorix, हाथरस में आधारित। प्रोडक्शन वेब ऐप्स, AI एजेंट्स और डिजिटल ऑटोमेशन सिस्टम का संपूर्ण निर्माण।'
+                : 'Based at HMorix, Hathras, UP. Architecting production web systems, 24/7 AI agents, and workflow automations end-to-end.'}
             </p>
             <div className="flex items-center gap-2 text-xs font-mono text-white/60">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>BATCH 01 PRODUCTION CURRENTLY OPEN</span>
+              <span>AVAILABLE FOR FULL-STACK &amp; AI AGENT CONTRACTS</span>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
             <h4 className="text-xs font-mono uppercase tracking-widest text-white/50 font-bold mb-4">
-              COLLECTION
+              PROJECTS
             </h4>
             <ul className="space-y-2.5 text-sm text-white/80">
               <li>
-                <button onClick={() => scrollTo('catalog')} className="hover:text-[#f4772a] transition-colors">
-                  Best Jackets
+                <button onClick={() => scrollTo('projects')} className="hover:text-[#f4772a] transition-colors">
+                  WhatsApp 24/7 AI Agent
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('catalog')} className="hover:text-[#f4772a] transition-colors">
-                  Retro Jerseys #48
+                <button onClick={() => scrollTo('projects')} className="hover:text-[#f4772a] transition-colors">
+                  EventNix Tech Aggregator
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('customizer')} className="hover:text-[#f4772a] transition-colors flex items-center gap-1">
-                  <span>Custom Kit Builder</span>
+                <button onClick={() => scrollTo('projects')} className="hover:text-[#f4772a] transition-colors">
+                  BillingFlow SaaS Invoicing
+                </button>
+              </li>
+              <li>
+                <button onClick={() => scrollTo('scope-builder')} className="hover:text-[#f4772a] transition-colors flex items-center gap-1">
+                  <span>Scope Calculator</span>
                   <span className="text-[10px] text-[#f4772a] font-mono">NEW</span>
-                </button>
-              </li>
-              <li>
-                <button onClick={() => scrollTo('catalog')} className="hover:text-[#f4772a] transition-colors">
-                  Tracksuits & Pants
-                </button>
-              </li>
-              <li>
-                <button onClick={() => scrollTo('catalog')} className="hover:text-[#f4772a] transition-colors">
-                  Stadium Scarves
                 </button>
               </li>
             </ul>
@@ -89,81 +87,78 @@ export const Footer: React.FC<FooterProps> = ({ currentTheme, onSelectTheme, lan
           {/* Experience Links */}
           <div>
             <h4 className="text-xs font-mono uppercase tracking-widest text-white/50 font-bold mb-4">
-              EXPERIENCE
+              CAREER &amp; HUBS
             </h4>
             <ul className="space-y-2.5 text-sm text-white/80">
               <li>
-                <button onClick={() => scrollTo('gacha')} className="hover:text-[#f4772a] transition-colors">
-                  Photocard Gacha Simulator
+                <button onClick={() => scrollTo('experience')} className="hover:text-[#f4772a] transition-colors">
+                  HMorix Technologies (2026-Present)
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('lookbook')} className="hover:text-[#f4772a] transition-colors">
-                  Campaign Lookbook
+                <button onClick={() => scrollTo('experience')} className="hover:text-[#f4772a] transition-colors">
+                  Sahara India Pariwar Automation
                 </button>
               </li>
               <li>
-                <button onClick={() => scrollTo('retailers')} className="hover:text-[#f4772a] transition-colors">
-                  Offline Stores & Pop-ups
+                <button onClick={() => scrollTo('experience')} className="hover:text-[#f4772a] transition-colors">
+                  DD Computers (Aadhaar Kendra)
                 </button>
               </li>
               <li>
-                <a
-                  href="#hero"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    scrollTo('hero');
-                  }}
-                  className="hover:text-[#f4772a] transition-colors"
-                >
-                  Size Chart & Fitting
-                </a>
+                <button onClick={() => scrollTo('skills')} className="hover:text-[#f4772a] transition-colors">
+                  Tech Mastery Badges
+                </button>
               </li>
             </ul>
           </div>
 
-          {/* Newsletter Drop Alert */}
+          {/* Contact Direct */}
           <div>
             <h4 className="text-xs font-mono uppercase tracking-widest text-white/50 font-bold mb-4">
-              DROP NOTIFICATION
+              CONTACT &amp; INQUIRIES
             </h4>
-            <p className="text-xs text-white/70 mb-3">
-              Dapatkan notifikasi batch rilis berikutnya & info photocard eksklusif.
-            </p>
-            {subscribed ? (
-              <div className="p-3 bg-emerald-950/60 border border-emerald-500/40 text-emerald-400 text-xs font-mono flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 shrink-0" />
-                <span>Terdaftar! Cek email konfirmasi kamu.</span>
-              </div>
-            ) : (
-              <form onSubmit={handleSubscribe} className="space-y-2">
-                <input
-                  type="email"
-                  required
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  placeholder="Email kamu..."
-                  className="w-full px-3 py-2 text-xs font-mono bg-white/10 border border-white/20 text-white placeholder:text-white/40 focus:border-[#f4772a] focus:outline-none"
-                />
-                <button
-                  type="submit"
-                  className="w-full py-2 bg-[#f4772a] hover:bg-[#f4772a]/90 text-white text-xs font-mono font-bold tracking-wider uppercase transition-colors"
-                >
-                  NOTIFY ME FOR BATCH 02
-                </button>
-              </form>
-            )}
+            <ul className="space-y-2.5 text-xs font-mono text-white/80 mb-4">
+              <li className="flex items-center gap-2">
+                <Mail className="w-3.5 h-3.5 text-[#f4772a]" />
+                <a href="mailto:hssuperuserc@gmail.com" className="hover:text-[#f4772a]">
+                  hssuperuserc@gmail.com
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Phone className="w-3.5 h-3.5 text-[#f4772a]" />
+                <a href="https://wa.me/919368153189" target="_blank" rel="noreferrer" className="hover:text-[#f4772a]">
+                  +91 9368153189
+                </a>
+              </li>
+              <li className="flex items-center gap-2">
+                <Github className="w-3.5 h-3.5 text-[#f4772a]" />
+                <a href="https://github.com/hmorix" target="_blank" rel="noreferrer" className="hover:text-[#f4772a]">
+                  github.com/hmorix
+                </a>
+              </li>
+            </ul>
+
+            <a
+              href="https://wa.me/919368153189?text=Hi%20Harsh%2C%20let%27s%20discuss%20a%20project%20or%20live%20demo."
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex w-full py-2 bg-[#f4772a] hover:bg-[#f4772a]/90 text-[#101214] text-xs font-mono font-bold tracking-wider uppercase transition-colors items-center justify-center gap-1.5"
+            >
+              <span>CONNECT ON WHATSAPP</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </a>
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Swatches (matching reference) */}
+        {/* Bottom Bar: Copyright & Swatches */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono text-white/60">
           <div>
-            © 2026 ERIGO X JKT48 VOL. 6 — THE PATH TO VICTORY. ALL RIGHTS RESERVED.
+            © 2026 HARSH SHARMA • FULL STACK DEVELOPER &amp; UI/UX DESIGNER • HMORIX
           </div>
 
           <div className="flex items-center gap-4">
-            <span className="text-[11px] text-white/40">COLORWAY THEME:</span>
+            <span className="text-[11px] text-white/40">THEME:</span>
             <div className="flex items-center gap-1.5" aria-label="Theme selector">
               {COLOR_THEMES.map(theme => (
                 <button

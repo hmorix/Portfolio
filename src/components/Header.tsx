@@ -1,13 +1,13 @@
 import React from 'react';
-import { Search, User, ShoppingBag, Volume2, VolumeX, Menu, X, Sparkles } from 'lucide-react';
+import { Search, User, Sparkles, Volume2, VolumeX, Menu, X, Briefcase, FileText } from 'lucide-react';
 import { sounds } from '../utils/audio';
 
 interface HeaderProps {
-  cartCount: number;
-  onOpenCart: () => void;
+  demoCount: number;
+  onOpenDemoCart: () => void;
   onOpenSearch: () => void;
   onOpenAccount: () => void;
-  lang: 'ID' | 'EN';
+  lang: 'EN' | 'HI';
   onToggleLang: () => void;
   isMuted: boolean;
   onToggleAudio: () => void;
@@ -17,8 +17,8 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
-  cartCount,
-  onOpenCart,
+  demoCount,
+  onOpenDemoCart,
   onOpenSearch,
   onOpenAccount,
   lang,
@@ -40,7 +40,7 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-40 px-[4.6vw] py-3 md:py-4 transition-all duration-300 backdrop-blur-md bg-[#edf0f1]/80 border-b border-[#101214]/5">
+      <header className="fixed top-0 left-0 right-0 z-40 px-[4.6vw] py-3 md:py-4 transition-all duration-300 backdrop-blur-md bg-[#edf0f1]/90 border-b border-[#101214]/8">
         <div className="max-w-[1720px] mx-auto grid grid-cols-2 lg:grid-cols-3 items-center">
           {/* Brand */}
           <div className="flex items-center gap-2">
@@ -48,63 +48,63 @@ export const Header: React.FC<HeaderProps> = ({
               onClick={() => scrollTo('hero')}
               className="text-left font-sans text-xl md:text-2xl lg:text-[26px] tracking-tight font-medium select-none group"
             >
-              ThePathTo<span className="text-[#f4772a] font-bold group-hover:underline">Victory</span>
+              Harsh<span className="text-[#f4772a] font-bold group-hover:underline">Sharma</span>
             </button>
-            <span className="hidden sm:inline-block text-[11px] font-mono uppercase tracking-wider px-1.5 py-0.5 bg-[#101214] text-white rounded">
-              Vol. 6
+            <span className="hidden sm:inline-block text-[11px] font-mono uppercase tracking-wider px-2 py-0.5 bg-[#101214] text-white rounded">
+              HMorix Dev
             </span>
           </div>
 
           {/* Center Navigation */}
-          <nav className="hidden lg:flex items-center justify-center gap-6 xl:gap-9 text-[15px] xl:text-[17px] font-medium tracking-tight">
+          <nav className="hidden lg:flex items-center justify-center gap-6 xl:gap-8 text-[15px] xl:text-[16px] font-medium tracking-tight">
             <button
               onClick={() => scrollTo('hero')}
               className={`transition-colors hover:text-[#f4772a] ${activeSection === 'hero' ? 'text-[#f4772a] font-semibold' : 'text-[#101214]'}`}
             >
-              {lang === 'ID' ? 'Beranda' : 'Home'}
+              {lang === 'HI' ? 'होम' : 'Overview'}
             </button>
             <button
-              onClick={() => scrollTo('catalog')}
-              className={`transition-colors hover:text-[#f4772a] ${activeSection === 'catalog' ? 'text-[#f4772a] font-semibold' : 'text-[#f4772a]'}`}
+              onClick={() => scrollTo('projects')}
+              className={`transition-colors hover:text-[#f4772a] ${activeSection === 'projects' ? 'text-[#f4772a] font-semibold' : 'text-[#101214]'}`}
             >
-              {lang === 'ID' ? 'Koleksi' : 'Collection'}
+              {lang === 'HI' ? 'प्रोजेक्ट्स' : 'Projects'}
             </button>
             <button
-              onClick={() => scrollTo('customizer')}
+              onClick={() => scrollTo('scope-builder')}
               className="transition-colors hover:text-[#f4772a] text-[#101214] flex items-center gap-1"
             >
-              <span>{lang === 'ID' ? 'Kustom Jersey' : 'Custom Kit'}</span>
+              <span>{lang === 'HI' ? 'प्रोजेक्ट स्कोप' : 'Scope Calculator'}</span>
               <span className="w-1.5 h-1.5 rounded-full bg-[#f4772a]" />
             </button>
             <button
-              onClick={() => scrollTo('gacha')}
+              onClick={() => scrollTo('skills')}
               className="transition-colors hover:text-[#f4772a] text-[#101214]"
             >
-              Photocard
+              {lang === 'HI' ? 'स्किल्स' : 'Tech Badges'}
             </button>
             <button
-              onClick={() => scrollTo('lookbook')}
+              onClick={() => scrollTo('experience')}
               className="transition-colors hover:text-[#f4772a] text-[#101214]"
             >
-              Lookbook
+              {lang === 'HI' ? 'अनुभव' : 'Experience'}
             </button>
             <button
-              onClick={() => scrollTo('retailers')}
+              onClick={() => scrollTo('case-studies')}
               className="transition-colors hover:text-[#f4772a] text-[#101214]"
             >
-              {lang === 'ID' ? 'Toko Offline' : 'Stores'}
+              Case Studies
             </button>
           </nav>
 
           {/* Right Tools */}
-          <div className="flex items-center justify-end gap-3 sm:gap-4 md:gap-5">
+          <div className="flex items-center justify-end gap-2.5 sm:gap-3.5 md:gap-4">
             {/* Audio Toggle */}
             <button
               onClick={() => {
                 onToggleAudio();
                 sounds.playClick();
               }}
-              title={isMuted ? 'Unmute Stadium Sounds' : 'Mute Sound'}
+              title={isMuted ? 'Unmute Sound' : 'Mute Sound'}
               className="p-2 text-[#101214]/80 hover:text-[#f4772a] transition-colors rounded-full hover:bg-black/5"
               aria-label="Toggle sound"
             >
@@ -118,7 +118,7 @@ export const Header: React.FC<HeaderProps> = ({
                 sounds.playClick();
               }}
               className="text-xs font-mono font-bold tracking-wider px-2 py-1 border border-[#101214]/20 rounded hover:border-[#f4772a] hover:text-[#f4772a] transition-colors"
-              title="Switch Language"
+              title="Switch Language (English / Hindi)"
             >
               {lang}
             </button>
@@ -130,41 +130,45 @@ export const Header: React.FC<HeaderProps> = ({
                 onOpenSearch();
               }}
               className="p-2 text-[#101214] hover:text-[#f4772a] transition-colors rounded-full hover:bg-black/5"
-              aria-label="Search collection"
-              title="Search (Cmd+K)"
+              aria-label="Search portfolio"
+              title="Search Projects & Skills (Cmd+K)"
             >
               <Search className="w-5 h-5" />
             </button>
 
-            {/* Account */}
+            {/* Profile / Resume Card */}
             <button
               onClick={() => {
                 sounds.playClick();
                 onOpenAccount();
               }}
               className="p-2 text-[#101214] hover:text-[#f4772a] transition-colors rounded-full hover:bg-black/5"
-              aria-label="Account and fanclub"
-              title="JKT48 Official Member"
+              aria-label="Developer Profile"
+              title="Harsh Sharma Bio & Resume"
             >
               <User className="w-5 h-5" />
             </button>
 
-            {/* Shopping Bag / Cart */}
+            {/* Demo Request Cart / Application Drawer */}
             <button
               onClick={() => {
                 sounds.playClick();
-                onOpenCart();
+                onOpenDemoCart();
               }}
-              className="relative p-2 text-[#101214] hover:text-[#f4772a] transition-colors rounded-full hover:bg-black/5"
-              aria-label="Pre-Order Bag"
+              className="relative px-3 py-1.5 md:px-3.5 md:py-2 bg-[#101214] text-white hover:bg-[#f4772a] transition-all rounded flex items-center gap-2 shadow-sm text-xs font-mono font-semibold"
+              aria-label="Demo Application Basket"
+              title="Apply for Live Demo"
             >
-              <ShoppingBag className="w-5 h-5" />
-              {cartCount > 0 ? (
-                <span className="absolute -top-0.5 -right-0.5 bg-[#f4772a] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center animate-pulse">
-                  {cartCount}
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">
+                {lang === 'HI' ? 'डेमो बैग' : 'Demo Bag'}
+              </span>
+              {demoCount > 0 ? (
+                <span className="bg-[#f4772a] text-white text-[10px] font-bold px-1.5 py-0.2 rounded-full animate-pulse">
+                  {demoCount}
                 </span>
               ) : (
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-[#f4772a]" />
+                <span className="w-2 h-2 rounded-full bg-[#f4772a]" />
               )}
             </button>
 
@@ -185,58 +189,56 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Mobile Drawer Menu */}
       {mobileMenuOpen && (
-        <div className="fixed inset-0 z-30 bg-[#101214]/90 backdrop-blur-lg flex flex-col justify-between pt-24 pb-8 px-8 lg:hidden animate-fadeIn text-white">
-          <div className="flex flex-col gap-6 text-2xl font-bebas tracking-wide text-left">
+        <div className="fixed inset-0 z-30 bg-[#101214]/95 backdrop-blur-xl flex flex-col justify-between pt-24 pb-8 px-8 lg:hidden animate-fadeIn text-white">
+          <div className="flex flex-col gap-5 text-2xl font-bebas tracking-wide text-left">
             <button
               onClick={() => scrollTo('hero')}
               className="text-left py-2 hover:text-[#f4772a] transition-colors border-b border-white/10"
             >
-              {lang === 'ID' ? 'BERANDA' : 'HOME'}
+              {lang === 'HI' ? 'होम' : 'OVERVIEW'}
             </button>
             <button
-              onClick={() => scrollTo('catalog')}
+              onClick={() => scrollTo('projects')}
               className="text-left py-2 text-[#f4772a] hover:text-white transition-colors border-b border-white/10 flex items-center justify-between"
             >
-              <span>{lang === 'ID' ? 'KOLEKSI PRODUK' : 'COLLECTION'}</span>
-              <span className="text-xs font-mono font-normal uppercase bg-[#f4772a] text-white px-2 py-0.5 rounded">Batch 01</span>
+              <span>{lang === 'HI' ? 'प्रोजेक्ट्स' : 'FEATURED PROJECTS'}</span>
+              <span className="text-xs font-mono font-normal uppercase bg-[#f4772a] text-white px-2 py-0.5 rounded">7 Apps</span>
             </button>
             <button
-              onClick={() => scrollTo('customizer')}
+              onClick={() => scrollTo('scope-builder')}
               className="text-left py-2 hover:text-[#f4772a] transition-colors border-b border-white/10 flex items-center justify-between"
             >
-              <span>{lang === 'ID' ? 'KUSTOM NAMA & NOMOR' : 'CUSTOM KIT BUILDER'}</span>
+              <span>{lang === 'HI' ? 'प्रोजेक्ट स्कोप कैलकुलेटर' : 'SCOPE CALCULATOR'}</span>
               <Sparkles className="w-5 h-5 text-[#f4772a]" />
             </button>
             <button
-              onClick={() => scrollTo('gacha')}
+              onClick={() => scrollTo('skills')}
               className="text-left py-2 hover:text-[#f4772a] transition-colors border-b border-white/10"
             >
-              JKT48 PHOTOCARD GACHA
+              {lang === 'HI' ? 'स्किल्स बैजेस' : 'TECH STACK BADGES'}
             </button>
             <button
-              onClick={() => scrollTo('lookbook')}
+              onClick={() => scrollTo('experience')}
               className="text-left py-2 hover:text-[#f4772a] transition-colors border-b border-white/10"
             >
-              EDITORIAL LOOKBOOK
+              {lang === 'HI' ? 'काम का अनुभव' : 'WORK EXPERIENCE (HMORIX)'}
             </button>
             <button
-              onClick={() => scrollTo('retailers')}
+              onClick={() => scrollTo('case-studies')}
               className="text-left py-2 hover:text-[#f4772a] transition-colors border-b border-white/10"
             >
-              {lang === 'ID' ? 'LOKASI TOKO OFFLINE' : 'STORE LOCATOR'}
+              CASE STUDIES & ARCHITECTURE
             </button>
           </div>
 
-          <div className="flex items-center justify-between pt-6 border-t border-white/10 text-sm font-sans text-white/70">
-            <span>© Erigo x JKT48 Vol. 6</span>
-            <div className="flex items-center gap-3">
-              <button
-                onClick={() => onToggleLang()}
-                className="font-mono text-xs text-white border border-white/30 px-2 py-1 rounded"
-              >
-                LANG: {lang}
-              </button>
-            </div>
+          <div className="flex items-center justify-between pt-6 border-t border-white/10 text-xs font-mono text-white/70">
+            <span>Harsh Sharma • Hathras, UP</span>
+            <button
+              onClick={() => onToggleLang()}
+              className="text-white border border-white/30 px-2 py-1 rounded"
+            >
+              LANG: {lang}
+            </button>
           </div>
         </div>
       )}

@@ -1,240 +1,286 @@
 import React, { useState, useEffect } from 'react';
-import { ArrowUpRight, Flame, ShieldCheck, ChevronRight } from 'lucide-react';
-import { CAMPAIGN_FACES_BASE64, MODEL_LEFT_BASE64 } from '../data/assets';
-import { COLOR_THEMES } from '../data/products';
+import { ArrowUpRight, ChevronRight, Zap, Bot, Code2, Terminal, Play, Sparkles } from 'lucide-react';
+import { HARSH_PORTRAIT_PATH, DEVELOPER_BACKDROP_PATH } from '../data/assets';
+import { COLOR_THEMES } from '../data/portfolio';
+import { HeroVideoIntro } from './HeroVideoIntro';
 import { sounds } from '../utils/audio';
 
 interface HeroProps {
-  onPreOrderClick: () => void;
-  onExploreClick: () => void;
+  onApplyDemoClick: () => void;
+  onExploreProjectsClick: () => void;
   currentTheme: string;
   onSelectTheme: (themeId: string) => void;
-  lang: 'ID' | 'EN';
+  lang: 'EN' | 'HI';
 }
 
 export const Hero: React.FC<HeroProps> = ({
-  onPreOrderClick,
-  onExploreClick,
+  onApplyDemoClick,
+  onExploreProjectsClick,
   currentTheme,
   onSelectTheme,
   lang,
 }) => {
-  // Countdown Timer state
-  const [timeLeft, setTimeLeft] = useState({
-    days: 4,
-    hours: 18,
-    minutes: 42,
-    seconds: 15,
-  });
+  const [videoModalOpen, setVideoModalOpen] = useState(false);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft(prev => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        }
-        if (prev.minutes > 0) {
-          return { ...prev, minutes: 59, seconds: 59 };
-        }
-        if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        }
-        if (prev.days > 0) {
-          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        return prev;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, []);
-
-  // Parallax subtle tilt on mouse
+  // Parallax tilt on mouse
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     const { clientX, clientY, currentTarget } = e;
     const { clientWidth, clientHeight } = currentTarget;
-    const x = (clientX / clientWidth - 0.5) * 16;
-    const y = (clientY / clientHeight - 0.5) * 16;
+    const x = (clientX / clientWidth - 0.5) * 14;
+    const y = (clientY / clientHeight - 0.5) * 14;
     setMousePos({ x, y });
+  };
+
+  // Live Role Typing Animation
+  const roles = [
+    'Full Stack Web Developer',
+    'UI/UX & Motion Designer',
+    '24/7 Autonomous AI Agent Architect',
+    'Enterprise Process Automator',
+  ];
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [displayedRole, setDisplayedRole] = useState('');
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentFullRole = roles[currentRoleIndex];
+    const typingSpeed = isDeleting ? 30 : 60;
+
+    const timer = setTimeout(() => {
+      if (!isDeleting) {
+        if (displayedRole.length < currentFullRole.length) {
+          setDisplayedRole(currentFullRole.slice(0, displayedRole.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 1800);
+        }
+      } else {
+        if (displayedRole.length > 0) {
+          setDisplayedRole(currentFullRole.slice(0, displayedRole.length - 1));
+        } else {
+          setIsDeleting(false);
+          setCurrentRoleIndex((currentRoleIndex + 1) % roles.length);
+        }
+      }
+    }, typingSpeed);
+
+    return () => clearTimeout(timer);
+  }, [displayedRole, isDeleting, currentRoleIndex, roles]);
+
+  const scrollTo = (id: string) => {
+    sounds.playClick();
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
     <section
       id="hero"
       onMouseMove={handleMouseMove}
-      className="relative isolation-isolate min-h-[100svh] lg:h-screen overflow-hidden pt-20 md:pt-0 flex flex-col justify-between select-none bg-gradient-to-br from-[#fafafa] via-[#f4f5f5] to-[#e9ecee]"
+      className="relative isolation-isolate min-h-[100svh] lg:min-h-screen overflow-hidden pt-20 md:pt-24 lg:pt-28 pb-8 flex flex-col justify-between select-none bg-gradient-to-br from-[#fafafa] via-[#f4f5f5] to-[#e9ecee]"
       style={{
-        background: 'linear-gradient(110deg, #fafafa 0%, #f4f5f5 38%, #e9ecee 38%, #e9ecee 100%)',
+        background: 'linear-gradient(115deg, #fafafa 0%, #f4f5f5 36%, #e9ecee 36%, #e9ecee 100%)',
       }}
     >
-      {/* Background Campaign Faces with slanted polygon cut-path from mockup */}
+      {/* Background Developer Code & Workflow with slanted cut */}
       <div
-        className="absolute inset-0 -z-10 slant-hero-faces pointer-events-none opacity-90 transition-transform duration-700 ease-out"
+        className="absolute inset-0 -z-10 slant-hero-faces pointer-events-none opacity-85 transition-transform duration-700 ease-out"
         style={{
-          transform: `translate3d(${mousePos.x * 0.3}px, ${mousePos.y * 0.3}px, 0)`,
-          backgroundImage: `linear-gradient(180deg, rgba(235, 238, 240, 0.35) 0%, rgba(235, 238, 240, 0.44) 48%, rgba(235, 238, 240, 0.91) 82%, #e9ecee 100%), url("${CAMPAIGN_FACES_BASE64}")`,
+          transform: `translate3d(${mousePos.x * 0.25}px, ${mousePos.y * 0.25}px, 0)`,
+          backgroundImage: `linear-gradient(180deg, rgba(235, 238, 240, 0.45) 0%, rgba(235, 238, 240, 0.55) 50%, rgba(235, 238, 240, 0.95) 85%, #e9ecee 100%), url("${DEVELOPER_BACKDROP_PATH}")`,
           backgroundRepeat: 'no-repeat',
-          backgroundSize: '100% 100%, 61.15vw auto',
-          backgroundPosition: 'center, right 6.5vh',
+          backgroundSize: 'cover',
+          backgroundPosition: 'right center',
         }}
         aria-hidden="true"
       />
 
-      {/* Left Campaign Model Cutout with slanted polygon cut-path from mockup */}
+      {/* Left Slanted Portrait of Harsh Sharma */}
       <div
-        className="absolute left-0 top-0 bottom-0 w-full md:w-[42vw] h-[48vh] md:h-full z-0 slant-hero-model pointer-events-none transition-transform duration-500 ease-out"
+        className="absolute left-0 top-0 bottom-0 w-full md:w-[44vw] lg:w-[40vw] h-[46vh] md:h-full z-0 slant-hero-model pointer-events-none transition-transform duration-500 ease-out shadow-2xl"
         style={{
-          transform: `translate3d(${mousePos.x * -0.5}px, ${mousePos.y * -0.3}px, 0)`,
-          backgroundImage: `url("${MODEL_LEFT_BASE64}")`,
+          transform: `translate3d(${mousePos.x * -0.4}px, ${mousePos.y * -0.2}px, 0)`,
+          backgroundImage: `linear-gradient(180deg, rgba(16, 18, 20, 0) 60%, rgba(16, 18, 20, 0.25) 100%), url("${HARSH_PORTRAIT_PATH}")`,
           backgroundRepeat: 'no-repeat',
           backgroundSize: 'cover',
-          backgroundPosition: 'left bottom',
+          backgroundPosition: 'center 15%',
         }}
         role="img"
-        aria-label="Erigo x JKT48 model in athletic jacket"
+        aria-label="Harsh Sharma — Full Stack Web Developer & UI/UX Designer"
       />
 
-      {/* Main Hero Copy Container */}
-      <div className="relative z-10 px-[6vw] md:px-0 md:absolute md:top-[34vh] lg:top-[33vh] md:left-[39%] md:right-[5.9%] pt-48 md:pt-0">
-        {/* Collaboration Tag & Live Counter */}
-        <div className="flex flex-wrap items-center gap-3 mb-3 text-xs md:text-sm font-mono tracking-tight text-[#101214]/80">
+      {/* Main Content Area */}
+      <div className="relative z-10 px-[6vw] md:px-0 md:ml-[45vw] lg:ml-[42vw] md:mr-[5vw] pt-44 sm:pt-52 md:pt-4 lg:pt-6 my-auto flex flex-col justify-center max-w-3xl">
+        {/* Status Pills */}
+        <div className="flex flex-wrap items-center gap-2.5 mb-3 text-xs font-mono text-[#101214]">
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#101214] text-white font-medium text-[11px] rounded uppercase tracking-wider">
-            <Flame className="w-3.5 h-3.5 text-[#f4772a]" />
-            Official Drop Vol. 6
+            <Terminal className="w-3.5 h-3.5 text-[#f4772a]" />
+            HMorix Developer
           </span>
-          <span className="hidden sm:inline-block text-[#101214]/40">/</span>
-          <span className="font-semibold text-[#101214] tracking-normal">
-            FOOTBALL CULTURE X JKT48
+          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 text-emerald-800 border border-emerald-300/80 font-medium text-[11px] rounded">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <span>{lang === 'HI' ? 'हाथरस, यूपी • नए प्रोजेक्ट्स के लिए उपलब्ध' : 'Hathras, UP • Available for Roles'}</span>
           </span>
+
+          {/* Animated Intro Video Trigger Pill */}
+          <button
+            onClick={() => {
+              sounds.playClick();
+              setVideoModalOpen(true);
+            }}
+            className="inline-flex items-center gap-1.5 px-2.5 py-1 bg-[#f4772a] text-white font-bold text-[11px] rounded hover:bg-[#101214] transition-colors shadow-sm"
+            title="Watch Animated Role Explanation Video"
+          >
+            <Play className="w-3 h-3 fill-current" />
+            <span>Watch Role Video Intro</span>
+          </button>
         </div>
 
-        {/* Headline */}
-        <h1 className="font-normal text-[52px] sm:text-[68px] md:text-[76px] lg:text-[96px] xl:text-[104px] leading-[0.98] tracking-[-0.03em] text-[#101214] m-0 mb-3 whitespace-normal md:whitespace-nowrap drop-shadow-sm font-sans">
-          ThePathTo<span className="text-[#f4772a] font-medium">Victory</span>
+        {/* Main Headline */}
+        <h1 className="font-sans font-normal text-[48px] sm:text-[62px] md:text-[70px] lg:text-[84px] xl:text-[92px] leading-[0.98] tracking-[-0.03em] text-[#101214] m-0 mb-3">
+          Harsh<span className="text-[#f4772a] font-bold">Sharma</span>
         </h1>
 
-        {/* Editorial Description */}
-        <p className="text-[17px] sm:text-[19px] md:text-[21px] lg:text-[23px] leading-[1.3] text-[#101214]/90 max-w-[580px] m-0 mb-6 font-normal tracking-[-0.015em]">
-          {lang === 'ID' ? (
+        {/* Typing Animated Subtitle */}
+        <div className="font-mono text-base sm:text-lg md:text-xl font-bold text-[#101214] mb-3 flex items-center gap-2 min-h-[32px]">
+          <span className="text-[#f4772a]">&gt;</span>
+          <span>{displayedRole}</span>
+          <span className="w-2 h-5 bg-[#f4772a] animate-pulse inline-block" />
+        </div>
+
+        {/* Professional Summary */}
+        <p className="text-[16px] sm:text-[18px] md:text-[19px] leading-[1.32] text-[#101214]/90 max-w-2xl m-0 mb-5 font-normal tracking-[-0.015em]">
+          {lang === 'HI' ? (
             <>
-              Kolaborasi ERIGO X JKT48 Vol. 6 menampilkan produk-produk yang terinspirasi dari semangat sepakbola.
+              HMorix में फुल स्टैक वेब डेवलपर और UI/UX डिज़ाइनर। सिस्टम डिज़ाइन से लेकर ऑटोमेशन और AI एजेंट्स तक, प्रोडक्शन वेब ऐप्स को शुरू से अंत तक तेज़ और स्केलेबल बनाते हैं।
             </>
           ) : (
             <>
-              The ERIGO X JKT48 Vol. 6 collaboration featuring football-inspired streetwear and matchday jackets.
+              Full Stack Web Developer &amp; UI/UX Designer at HMorix. Building production web applications, 24/7 AI agents, and workflow automations end-to-end.
             </>
           )}
         </p>
 
-        {/* Action Buttons & Countdown */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 mb-6">
+        {/* Performance Highlights Bar */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-w-xl mb-6">
+          <div className="p-2.5 bg-white/85 border border-[#101214]/12 backdrop-blur-sm shadow-sm hover:border-[#f4772a] transition-colors">
+            <div className="text-[10px] font-mono text-[#101214]/60 uppercase">WORKFLOW AUTOMATION</div>
+            <div className="text-lg font-bebas text-[#101214] font-bold mt-0.5 flex items-center gap-1">
+              <Zap className="w-4 h-4 text-[#f4772a]" />
+              <span>8x Faster Execution</span>
+            </div>
+          </div>
+
+          <div className="p-2.5 bg-white/85 border border-[#101214]/12 backdrop-blur-sm shadow-sm hover:border-[#f4772a] transition-colors">
+            <div className="text-[10px] font-mono text-[#101214]/60 uppercase">AI AGENTS UPTIME</div>
+            <div className="text-lg font-bebas text-[#101214] font-bold mt-0.5 flex items-center gap-1">
+              <Bot className="w-4 h-4 text-[#f4772a]" />
+              <span>24/7 Zero-Server Cost</span>
+            </div>
+          </div>
+
+          <div className="col-span-2 sm:col-span-1 p-2.5 bg-white/85 border border-[#101214]/12 backdrop-blur-sm shadow-sm hover:border-[#f4772a] transition-colors">
+            <div className="text-[10px] font-mono text-[#101214]/60 uppercase">CLIENT PRODUCTS</div>
+            <div className="text-lg font-bebas text-[#101214] font-bold mt-0.5 flex items-center gap-1">
+              <Code2 className="w-4 h-4 text-[#f4772a]" />
+              <span>7+ Deployed Apps</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Action Buttons */}
+        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 mb-6">
           <button
             onClick={() => {
               sounds.playWhistle();
-              onPreOrderClick();
+              onApplyDemoClick();
             }}
-            className="group inline-flex items-center justify-center gap-3 w-full sm:w-[245px] h-[58px] md:h-[62px] bg-[#101214] text-white text-[19px] md:text-[20px] font-medium tracking-tight transition-all duration-200 hover:bg-[#f4772a] active:scale-[0.98] shadow-lg shadow-black/10"
+            className="group inline-flex items-center justify-center gap-2.5 px-6 h-[54px] md:h-[58px] bg-[#101214] text-white text-[17px] md:text-[18px] font-medium tracking-tight transition-all duration-200 hover:bg-[#f4772a] active:scale-[0.98] shadow-lg shadow-black/10"
           >
-            <span>{lang === 'ID' ? 'Pre-Order Sekarang' : 'Pre-Order Now'}</span>
+            <span>{lang === 'HI' ? 'डेमो और प्रपोजल मांगें' : 'Choose Projects & Apply for Demo'}</span>
             <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
 
           <button
             onClick={() => {
               sounds.playClick();
-              onExploreClick();
+              onExploreProjectsClick();
             }}
-            className="inline-flex items-center justify-center gap-2 px-6 h-[58px] md:h-[62px] border border-[#101214]/30 bg-white/70 hover:bg-white text-[#101214] text-[16px] font-medium tracking-tight transition-colors backdrop-blur-sm"
+            className="inline-flex items-center justify-center gap-2 px-6 h-[54px] md:h-[58px] border border-[#101214]/30 bg-white/80 hover:bg-white text-[#101214] text-[15px] font-medium tracking-tight transition-colors backdrop-blur-sm"
           >
-            <span>{lang === 'ID' ? 'Lihat Katalog Lengkap' : 'Explore Lookbook'}</span>
+            <span>{lang === 'HI' ? 'प्रोजेक्ट्स देखें' : 'Explore Featured Projects'}</span>
             <ArrowUpRight className="w-4 h-4 text-[#f4772a]" />
           </button>
         </div>
 
-        {/* Live Batch 01 Countdown Ticker */}
-        <div className="flex items-center gap-4 py-3 px-4 bg-white/70 backdrop-blur-md border border-[#101214]/10 rounded-sm max-w-[480px]">
-          <div className="text-[11px] font-mono uppercase tracking-wider text-[#101214]/60">
-            {lang === 'ID' ? 'Batas Waktu Batch 01' : 'Batch 01 Closes In'}
-          </div>
-          <div className="flex items-center gap-2 font-mono text-sm md:text-base font-bold text-[#101214]">
-            <span className="px-1.5 py-0.5 bg-[#101214] text-white rounded text-xs">{timeLeft.days}d</span>
-            <span>:</span>
-            <span className="px-1.5 py-0.5 bg-[#101214] text-white rounded text-xs">{String(timeLeft.hours).padStart(2, '0')}h</span>
-            <span>:</span>
-            <span className="px-1.5 py-0.5 bg-[#101214] text-white rounded text-xs">{String(timeLeft.minutes).padStart(2, '0')}m</span>
-            <span>:</span>
-            <span className="px-1.5 py-0.5 bg-[#f4772a] text-white rounded text-xs animate-pulse">{String(timeLeft.seconds).padStart(2, '0')}s</span>
-          </div>
-          <div className="ml-auto text-[11px] font-mono text-emerald-700 flex items-center gap-1">
-            <ShieldCheck className="w-3.5 h-3.5" />
-            <span>94% Reserved</span>
-          </div>
+        {/* Quick Tech Pill Tags */}
+        <div className="flex flex-wrap items-center gap-1.5 text-xs font-mono text-[#101214]/80">
+          <span className="text-[#101214]/50 font-bold mr-1">STACK:</span>
+          {['React.js', 'Vite', 'Node.js', 'Python', 'NVIDIA NIM', 'Supabase', 'Tailwind CSS'].map(t => (
+            <span key={t} className="px-2 py-0.5 bg-white/70 border border-black/10 rounded-sm">
+              {t}
+            </span>
+          ))}
         </div>
       </div>
 
-      {/* Sub-navigation categories from reference */}
-      <div className="relative z-10 px-[6vw] md:px-0 md:absolute md:left-[39%] md:top-[80vh] py-6 md:py-0">
-        <nav className="flex flex-wrap items-center gap-6 md:gap-8 text-[15px] md:text-[17px] font-medium text-[#101214]">
+      {/* Sub-Navigation Row */}
+      <div className="relative z-10 px-[6vw] md:px-[4.6vw] max-w-[1720px] mx-auto w-full pt-6 pb-2">
+        <nav className="flex flex-wrap items-center gap-5 sm:gap-8 text-[14px] md:text-[16px] font-medium text-[#101214]">
           <button
-            onClick={() => {
-              sounds.playClick();
-              onExploreClick();
-            }}
-            className="transition-colors hover:text-[#f4772a]"
+            onClick={() => scrollTo('projects')}
+            className="transition-colors hover:text-[#f4772a] flex items-center gap-1"
           >
-            {lang === 'ID' ? 'Semua Produk' : 'All Products'}
+            <span>{lang === 'HI' ? 'सभी प्रोजेक्ट्स' : 'Production Projects'}</span>
+            <span className="text-xs font-mono text-[#f4772a]">(7)</span>
           </button>
           <button
-            onClick={() => {
-              sounds.playClick();
-              const el = document.getElementById('catalog');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
-            className="text-[#f4772a] font-semibold transition-colors hover:underline"
+            onClick={() => scrollTo('scope-builder')}
+            className="text-[#f4772a] font-semibold transition-colors hover:underline flex items-center gap-1"
           >
-            Best Jackets
+            <Sparkles className="w-3.5 h-3.5" />
+            <span>Scope Calculator</span>
           </button>
           <button
-            onClick={() => {
-              sounds.playClick();
-              const el = document.getElementById('customizer');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
+            onClick={() => scrollTo('skills')}
             className="transition-colors hover:text-[#f4772a]"
           >
-            {lang === 'ID' ? 'Kustom Jersey' : 'Custom Jerseys'}
+            {lang === 'HI' ? 'स्किल्स बैजेस' : 'Tech Badges'}
           </button>
           <button
-            onClick={() => {
-              sounds.playClick();
-              const el = document.getElementById('retailers');
-              if (el) el.scrollIntoView({ behavior: 'smooth' });
-            }}
+            onClick={() => scrollTo('experience')}
             className="transition-colors hover:text-[#f4772a]"
           >
-            Store Retailer
+            Work Experience
+          </button>
+          <button
+            onClick={() => scrollTo('case-studies')}
+            className="transition-colors hover:text-[#f4772a]"
+          >
+            Case Studies
+          </button>
+          <button
+            onClick={() => setVideoModalOpen(true)}
+            className="text-[#f4772a] font-bold hover:underline flex items-center gap-1"
+          >
+            <Play className="w-3.5 h-3.5 fill-current" />
+            <span>Role Video Intro</span>
           </button>
         </nav>
       </div>
 
-      {/* Bottom Hero Bar (Store Link on left & Theme Swatches on right from mockup) */}
-      <div className="relative z-20 px-[4.6vw] pb-5 pt-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-[#101214]/5 bg-[#edf0f1]/70 backdrop-blur-sm">
-        {/* Left: Erigo Store button */}
+      {/* Bottom Bar: Company on left & Theme Swatches on right */}
+      <div className="relative z-20 px-[4.6vw] pt-4 border-t border-[#101214]/8 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs font-mono text-[#101214]/75">
         <button
-          onClick={() => {
-            sounds.playClick();
-            const el = document.getElementById('retailers');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
-          className="group flex items-center gap-2 text-[15px] md:text-[16px] font-bold text-[#101214] hover:text-[#f4772a] transition-colors"
+          onClick={() => scrollTo('experience')}
+          className="group flex items-center gap-1.5 text-[14px] font-bold text-[#101214] hover:text-[#f4772a] transition-colors"
         >
-          <span className="text-2xl leading-none font-normal transform -translate-y-0.5 transition-transform group-hover:-translate-y-1">↑</span>
-          <span>Erigo Store Offline Retailers</span>
+          <span className="text-xl leading-none font-normal transform -translate-y-0.5 transition-transform group-hover:-translate-y-1">↑</span>
+          <span>HMorix Technologies • Hathras, Uttar Pradesh</span>
         </button>
 
-        {/* Right: Credits and Interactive Swatches */}
-        <div className="flex items-center gap-4 text-xs md:text-sm text-[#101214]/70">
-          <span className="font-mono text-xs">Official Erigo x JKT48</span>
+        <div className="flex items-center gap-4">
+          <span className="text-xs">THEME:</span>
           <div className="flex items-center gap-1.5" aria-label="Color Theme Switcher">
             {COLOR_THEMES.map(theme => (
               <button
@@ -243,7 +289,7 @@ export const Hero: React.FC<HeroProps> = ({
                   sounds.playClick();
                   onSelectTheme(theme.id);
                 }}
-                className={`w-5 h-5 rounded-none border transition-all ${
+                className={`w-4 h-4 rounded-none border transition-all ${
                   currentTheme === theme.id ? 'scale-125 ring-2 ring-[#f4772a] z-10' : 'opacity-85 hover:opacity-100'
                 }`}
                 style={{ backgroundColor: theme.primary, borderColor: '#101214' }}
@@ -254,6 +300,15 @@ export const Hero: React.FC<HeroProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Hero Video Intro Modal */}
+      {videoModalOpen && (
+        <HeroVideoIntro
+          isModalOpen={true}
+          onCloseModal={() => setVideoModalOpen(false)}
+          lang={lang}
+        />
+      )}
     </section>
   );
 };
